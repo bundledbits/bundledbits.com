@@ -1,0 +1,33 @@
+# The URL the site will be built for
+base_url = "https://bundledbits.com"
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+# theme options
+theme = "zola-sam"
+highlight_code = true
+highlight_theme = "gruvbox-dark"
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = true
+
+taxonomies = [
+    {name = "tags"}
+]
+
+[extra]
+# Put all your custom variables here
+show_word_count = true
+show_reading_time = true
+same_bottom_menu = true
+
+home = "home"
+
+sam_menu = [
+    {text = "blog", link = "/blog"},
+    {text = "github", link = "https://github.com/LeonardMH"}
+]
+
+[extra.sam_footer]
+text = "Michael Leonard"
