@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://bundledbits.com/sitemap.xml

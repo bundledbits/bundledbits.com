@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="referrer" content="no-referrer">
+
+        <link rel="stylesheet" href="https:&#x2F;&#x2F;bundledbits.com&#x2F;fonts.css">
+        <link rel="stylesheet" href="https:&#x2F;&#x2F;bundledbits.com&#x2F;style.css">
+
+        <title>
+    Mass Editing Similar Files
+</title>
+
+        
+    </head>
+    <body>
+        
+    <div class="wrap">
+        <div class="section" id="title">
+            
+    Mass Editing Similar Files
+
+        </div>
+        <div class="section" id="content">
+            
+    
+        
+            
+    
+    Mon Apr  3, 2017
+
+        
+        
+            
+                &#183; 459 words
+            
+        
+        
+            
+            
+                &#183; 3 min
+            
+        
+        
+            <div class="tag-container">
+                
+                    <span class="tag">
+                        <a href="https:&#x2F;&#x2F;bundledbits.com&#x2F;tags&#x2F;workflows&#x2F;">
+                            workflows
+                        </a>
+                    </span>
+                
+            </div>
+        
+        <hr/>
+    
+    <p>There are occasionally situations where you may need to edit multiple files
+that are all similar but not exactly the same. In these occasions, the method
+presented here can be useful for saving a lot of your valuable time.</p>
+<p id="zola-continue-reading"><a name="continue-reading"></a></p>
+<p>This method leverages the power of git, diff, and patch in order to apply a
+single change across multiple files which are similar. <a href="https://academia.stackexchange.com/questions/5277/why-use-version-control-systems-for-writing-a-paper">You are using version
+control, right?</a>. These instructions you are either using a
+Unix like system (macOS or Linux), or Cygwin in Windows, the basic idea is
+simple:</p>
+<ol>
+<li><code>git diff &lt;edited file&gt; &gt; changes.patch</code></li>
+<li><code>find . -name &lt;file name&gt; -exec patch -p1 {} changes.patch \;</code></li>
+</ol>
+<p>Where <code>&lt;edited file&gt;</code> is the full path to the file with your changes. You can
+also make more complex patches if you want, just read about
+<a href="https://git-scm.com/docs/git-diff">git-diff</a>.</p>
+<p>Yes, the arguments to <code>find</code> are single dashes with full word arguments.</p>
+<h2 id="example-usage">Example Usage</h2>
+<p>It's often easier to see how to apply something when you get to see an example.
+Imagine a file structure such as:</p>
+<pre style="background-color:#282828;">
+<span style="color:#fdf4c1aa;">~/Desktop/example_project
+▶ tree .
+.
+├── common
+│   └── config.h
+├── project_1
+│   ├── config.h
+│   └── project_config.h
+├── project_10
+│   ├── config.h
+│   └── project_config.h
+├── project_2
+│   ├── config.h
+│   └── project_config.h
+├── project_3
+│   ├── config.h
+│   └── project_config.h
+├── project_4
+│   ├── config.h
+│   └── project_config.h
+├── project_5
+│   ├── config.h
+│   └── project_config.h
+├── project_6
+│   ├── config.h
+│   └── project_config.h
+├── project_7
+│   ├── config.h
+│   └── project_config.h
+├── project_8
+│   ├── config.h
+│   └── project_config.h
+└── project_9
+    ├── config.h
+    └── project_config.h
+
+11 directories, 21 files
+</span></pre>
+<p>In this example you want to add a single line to project_config.h, but don't
+want to have to manually edit 10 different files. To get around this, you would
+edit any one of the project_config.h files with your changes:</p>
+<pre style="background-color:#282828;">
+<span style="color:#fdf4c1aa;">▶ echo &quot;#define A_NEW_CONFIG_OPTION&quot; &gt;&gt; project_1/project_config.h
+</span></pre>
+<p>Finally, run the diff-patch process:</p>
+<pre style="background-color:#282828;">
+<span style="color:#fdf4c1aa;">git diff project_1/project_config.h &gt; changes.patch
+find . -name project_config.h -exec patch -p1 {} changes.patch \;
+</span></pre><h2 id="possible-caveats">Possible Caveats</h2>
+<p>This section lists some of the issues I've run into with this workflow. These
+issues mostly only apply to Windows.</p>
+<ul>
+<li>Cygwin doesn't come with patch installed by default, install it.</li>
+<li>Windows also has a find utility, if <code>/usr/bin</code> isn’t fairly early in your PATH
+then Cygwin will use that instead. You’ll get an error message like “FIND:
+Parameter format not correct”. To fix this you can move <code>/usr/bin</code> to a higher
+priority in your PATH or you can explicitly call <code>/usr/bin/find</code>.</li>
+<li>You may run into line ending errors when trying to apply the patch. Before
+running the command, you can convert the line endings of the files you want
+to edit with <code>find . -name “name of files” –exec dos2unix {} \;</code></li>
+<li>Be very sure to include the <code>-name</code> parameter, otherwise find will also
+search file contents, likely finding some of your files in the .git folder
+and modifying them. This can corrupt your git repository.</li>
+</ul>
+
+
+        </div>
+        
+    <div class="section bottom-menu">
+        <hr/>
+        <p>
+            
+                
+                    <a href="&#x2F;blog">blog</a>
+                    &#183;
+                
+                    <a href="https:&#x2F;&#x2F;github.com&#x2F;LeonardMH">github</a>
+                    &#183;
+                
+            
+            <a href="https:&#x2F;&#x2F;bundledbits.com">
+                home
+            </a>
+        </p>
+    </div>
+
+        
+    
+        <div class="section footer">
+            Michael Leonard
+        </div>
+    
+
+    </div>
+
+    </body>
+</html>
